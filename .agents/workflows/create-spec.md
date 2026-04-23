@@ -83,6 +83,9 @@ Read:
   * /models
   * /routes
   * /controllers
+  * /Client/src/pages
+  * /Client/src/components
+  * /Client/src/common
 * All files in `.gemini/specs/`
 
 Check GEMINI.md to ensure this step is not already completed.
@@ -145,6 +148,25 @@ If none → "No database changes"
 
 ---
 
+## Frontend Pages
+
+* List new React pages (routes) to be added to `App.jsx`
+
+---
+
+## Frontend Components
+
+* List new reusable UI components
+* Mention required glassmorphic/premium UI styling
+
+---
+
+## Frontend Services (API)
+
+* List new API calls to be added to `/Client/src/common/`
+
+---
+
 ## Files to change
 
 List all files to modify.
@@ -179,6 +201,13 @@ Always include:
 * Use async/await only (no .then chains)
 * Use environment variables for secrets
 
+### Frontend Rules
+* Use React Router for navigation
+* Use Axios for API calls within `/Client/src/common/`
+* Use Tailwind CSS for glassmorphic/premium UI design
+* Manage state appropriately (Redux/Context or local hooks)
+* Implement loading states and error handling via toast/sweetalert
+
 ---
 
 ## Definition of done
@@ -193,6 +222,10 @@ Checklist:
 * [ ] JWT authentication works
 * [ ] Protected routes are secured
 * [ ] Proper error handling implemented
+* [ ] Frontend UI components are built with premium/glassmorphic design
+* [ ] Frontend routing is configured
+* [ ] Forms are connected to backend API
+* [ ] Success and error messages are displayed to the user
 
 ---
 
