@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IoAdd, IoWalletOutline, IoCalendarOutline, IoShieldCheckmarkOutline } from 'react-icons/io5';
 import Navbar from '../components/Navbar';
 import StatCard from '../components/StatCard';
@@ -45,10 +46,10 @@ const Dashboard = () => {
             <h2 className="text-4xl font-bold text-slate-800 mb-2">Trading Sessions</h2>
             <p className="text-gray-400 font-medium">Architecting your fiscal strategy through precision tracking.</p>
           </div>
-          <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-200 group">
+          <Link to="/sessions/new" className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-200 group">
             <IoAdd size={24} className="group-hover:rotate-90 transition-transform" />
             <span>Create New Session</span>
-          </button>
+          </Link>
         </div>
 
         {/* Stats Grid */}
@@ -81,9 +82,9 @@ const Dashboard = () => {
         <div className="bg-white rounded-3xl shadow-sm border border-gray-50 overflow-hidden mb-10">
           <div className="p-8 border-b border-gray-50 flex items-center justify-between">
             <h3 className="text-lg font-bold text-slate-800">Past Sessions</h3>
-            <button className="text-blue-600 font-bold text-sm hover:underline flex items-center gap-1">
+            <Link to="/sessions" className="text-blue-600 font-bold text-sm hover:underline flex items-center gap-1">
               View Archive <span className="text-lg">→</span>
-            </button>
+            </Link>
           </div>
           
           <div className="p-4">
