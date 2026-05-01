@@ -1,3 +1,8 @@
+---
+name: frontend-design
+description: Expert guidance on achieving a premium, glassmorphic UI using React and Tailwind CSS for the Prop Expense Manager.
+---
+
 # Frontend Design Skill
 
 ## Description
