@@ -37,7 +37,7 @@ Prop Expense Manager/
 
 New UI → create a new component in /client/src/components or /pages
 Routing → handled in React Router (App.jsx)
-API calls → /client/src/services only (never directly inside components)
+API calls → /client/src/common only (never directly inside components)
 
 Where things belong:
 
