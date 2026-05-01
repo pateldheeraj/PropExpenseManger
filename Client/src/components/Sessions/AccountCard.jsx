@@ -1,38 +1,89 @@
 import React from 'react';
-import { FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
-const AccountCard = ({ account, onRemove, isEditable = false }) => {
+const AccountCard = ({ account, onEdit, onDelete, isEditable = true }) => {
+  // Mock PnL for visual representation as seen in design reference
+  // In a real scenario, this would come from a trade history/aggregation
+  const currentPnL = account.currentPnL || 0; 
+  const pnlPercentage = (currentPnL / account.startingBalance) * 100;
+  
+  // Calculate progress bar widths
+  // If profit: blue bar towards target
+  // If loss: red bar towards drawdown
+  const targetProgress = Math.min(Math.max((currentPnL / account.target) * 100, 0), 100);
+  const drawdownProgress = Math.min(Math.max((Math.abs(Math.min(currentPnL, 0)) / account.drawdown) * 100, 0), 100);
+
   return (
-    <div className="bg-white/5 border border-white/10 p-4 rounded-xl relative group">
-      {isEditable && onRemove && (
-        <button
-          type="button"
-          onClick={onRemove}
-          className="absolute top-3 right-3 text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-opacity"
-        >
-          <FiTrash2 size={18} />
-        </button>
+    <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all group relative overflow-hidden">
+      {/* Background Decorative Element */}
+      <div className="absolute -right-8 -top-8 w-24 h-24 bg-slate-50 rounded-full blur-2xl group-hover:bg-blue-50 transition-colors" />
+
+      {/* Action Buttons (Hover) */}
+      {isEditable && (
+        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+          <button 
+            onClick={() => onEdit && onEdit(account)}
+            className="p-2 bg-slate-50 hover:bg-blue-50 text-slate-400 hover:text-blue-600 rounded-lg transition-colors border border-slate-100"
+          >
+            <FiEdit size={16} />
+          </button>
+          <button 
+            onClick={() => onDelete && onDelete(account._id)}
+            className="p-2 bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-lg transition-colors border border-slate-100"
+          >
+            <FiTrash2 size={16} />
+          </button>
+        </div>
       )}
-      
-      <div className="flex justify-between items-start mb-3">
-        <h4 className="text-lg font-semibold text-white truncate pr-2">{account.propfirmName}</h4>
-        <span className="text-[10px] uppercase tracking-wider font-bold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded border border-indigo-400/20">
+
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6 relative z-10">
+        <div>
+          <h4 className="text-xl font-bold text-slate-800 leading-tight">{account.propfirmName}</h4>
+          <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase mt-1">ID: {account._id.slice(-8).toUpperCase()}</p>
+        </div>
+        <span className={`px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-full border ${
+          account.accountPhase === 'Funded' 
+            ? 'text-orange-600 bg-orange-50 border-orange-100' 
+            : 'text-blue-600 bg-blue-50 border-blue-100'
+        }`}>
           {account.accountPhase}
         </span>
       </div>
-      
-      <div className="grid grid-cols-2 gap-y-2 text-sm">
-        <div>
-          <span className="text-gray-500 block text-xs">Balance</span>
-          <span className="text-gray-200">${account.startingBalance?.toLocaleString() || 0}</span>
+
+      {/* PnL Display */}
+      <div className="mb-6">
+        <span className="text-xs font-bold text-slate-400 tracking-wider uppercase">Current PnL</span>
+        <div className={`text-3xl font-black mt-1 ${currentPnL >= 0 ? 'text-blue-600' : 'text-red-500'}`}>
+          {currentPnL >= 0 ? '+' : '-'}${Math.abs(currentPnL).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </div>
-        <div>
-          <span className="text-gray-500 block text-xs">Drawdown</span>
-          <span className="text-red-300">-${account.drawdown?.toLocaleString() || 0}</span>
+      </div>
+
+      {/* Progress Bars */}
+      <div className="space-y-4">
+        {/* Drawdown Progress */}
+        <div className="relative h-2 bg-slate-100 rounded-full overflow-hidden">
+          <div 
+            className="absolute right-1/2 left-0 bg-red-500 h-full rounded-full transition-all duration-1000 origin-right"
+            style={{ width: `${drawdownProgress / 2}%`, transform: 'translateX(100%)' }}
+          />
+          <div 
+            className="absolute left-1/2 right-0 bg-blue-500 h-full rounded-full transition-all duration-1000"
+            style={{ width: `${targetProgress / 2}%` }}
+          />
+          {/* Center line */}
+          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-white z-10" />
         </div>
-        <div>
-          <span className="text-gray-500 block text-xs">Profit Target</span>
-          <span className="text-green-300">${account.target?.toLocaleString() || 0}</span>
+
+        <div className="flex justify-between items-end">
+          <div className="text-left">
+            <span className="block text-[10px] font-bold text-slate-400 tracking-widest uppercase">Max Drawdown</span>
+            <span className="text-xs font-bold text-red-500">-${account.drawdown.toLocaleString()}</span>
+          </div>
+          <div className="text-right">
+            <span className="block text-[10px] font-bold text-slate-400 tracking-widest uppercase">Profit Target</span>
+            <span className="text-xs font-bold text-slate-800">${account.target.toLocaleString()}</span>
+          </div>
         </div>
       </div>
     </div>

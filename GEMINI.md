@@ -2,7 +2,7 @@
 
 This file serves as a reference for the project's preferred technologies and tools. Please adhere to these versions and packages whenever adding new features or installing dependencies.
 
-Property Expense Manager is a tool to manage propfirms  expenses. 
+Project Description :- The ProP Expense manager is a tool which is used to calculate the net Hedge Pnl.The idea is I will create a session Hedge. In which I will add accounts. What I do is when I place a trade on my pro firm account, I hedge it with my live capital. So when I make a profit in the pro firm account, then I will make a loss in my live account, and vice versa. So to calculate it, I am making this tool  
 
 Architecture
 Prop Expense Manager/
@@ -37,7 +37,7 @@ Prop Expense Manager/
 
 New UI → create a new component in /client/src/components or /pages
 Routing → handled in React Router (App.jsx)
-API calls → /client/src/services only (never directly inside components)
+API calls → /client/src/common only (never directly inside components)
 
 Where things belong:
 

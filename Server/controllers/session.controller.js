@@ -87,3 +87,86 @@ export const getSessionById = async (req, res) => {
     res.status(500).json({ status: "error", message: "Server error" });
   }
 };
+
+export const addAccountToSession = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const session = await Session.findOne({ _id: id, userId: req.user.id });
+
+    if (!session) {
+      return res.status(404).json({ status: "error", message: "Session not found or unauthorized" });
+    }
+
+    const { propfirmName, accountPhase, startingBalance, drawdown, target } = req.body;
+
+    const account = new Account({
+      sessionId: id,
+      propfirmName,
+      accountPhase,
+      startingBalance,
+      drawdown,
+      target
+    });
+
+    await account.save();
+
+    res.status(201).json({
+      status: "success",
+      message: "Account added successfully",
+      data: account
+    });
+  } catch (error) {
+    console.error("Add account error:", error);
+    res.status(500).json({ status: "error", message: error.message || "Server error" });
+  }
+};
+
+export const updateAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // First find account and populate session to check ownership
+    const account = await Account.findById(id).populate('sessionId');
+    
+    if (!account || account.sessionId.userId.toString() !== req.user.id) {
+      return res.status(404).json({ status: "error", message: "Account not found or unauthorized" });
+    }
+
+    const updatedAccount = await Account.findByIdAndUpdate(
+      id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "Account updated successfully",
+      data: updatedAccount
+    });
+  } catch (error) {
+    console.error("Update account error:", error);
+    res.status(500).json({ status: "error", message: error.message || "Server error" });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const account = await Account.findById(id).populate('sessionId');
+    
+    if (!account || account.sessionId.userId.toString() !== req.user.id) {
+      return res.status(404).json({ status: "error", message: "Account not found or unauthorized" });
+    }
+
+    await Account.findByIdAndDelete(id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Account deleted successfully"
+    });
+  } catch (error) {
+    console.error("Delete account error:", error);
+    res.status(500).json({ status: "error", message: "Server error" });
+  }
+};

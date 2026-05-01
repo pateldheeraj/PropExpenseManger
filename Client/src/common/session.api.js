@@ -22,3 +22,18 @@ export const getSessionByIdAPI = async (id) => {
   const response = await api.get(`/${id}`);
   return response.data;
 };
+
+export const addAccountToSessionAPI = async (sessionId, accountData) => {
+  const response = await api.post(`/${sessionId}/accounts`, accountData);
+  return response.data;
+};
+
+export const updateAccountAPI = async (accountId, accountData) => {
+  const response = await api.patch(`/accounts/${accountId}`, accountData);
+  return response.data;
+};
+
+export const deleteAccountAPI = async (accountId) => {
+  const response = await api.delete(`/accounts/${accountId}`);
+  return response.data;
+};
