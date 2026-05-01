@@ -7,6 +7,7 @@ import ProtectedRoute from './components/Auth/ProtectedRoute';
 import Sessions from './pages/Sessions';
 import CreateSession from './pages/CreateSession';
 import SessionDetail from './pages/SessionDetail';
+import AddAccount from './pages/AddAccount';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/sessions" element={<Sessions />} />
           <Route path="/sessions/new" element={<CreateSession />} />
           <Route path="/sessions/:id" element={<SessionDetail />} />
+          <Route path="/sessions/:id/add-account" element={<AddAccount />} />
         </Route>
       </Routes>
     </Router>
